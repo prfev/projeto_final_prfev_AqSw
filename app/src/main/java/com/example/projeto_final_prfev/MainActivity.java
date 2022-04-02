@@ -8,21 +8,24 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private WifiStatusReceiver receiver;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         Intent intent = new Intent(this, WiFiIntentService.class);
         Intent intent2 = new Intent(this, WiFiIntentService.class);
-        intent.putExtra("wifi", "Enabled");
-        intent2.putExtra("wifi2", "Disabled");
+        intent.putExtra("wifi", "O Wifi está ativado!");
+        intent2.putExtra("wifi2", "O Wifi está desativado!!");
 
         Button button1 = findViewById(R.id.button1);
         Button button2 = findViewById(R.id.button2);
@@ -60,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         receiver = new WifiStatusReceiver();
         IntentFilter filter = new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
         registerReceiver(receiver, filter);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intentScreenName = new Intent(this,ScreenNameService.class);
+        intentScreenName.putExtra("tela","Tela Principal");
+        startService(intentScreenName);
     }
     public boolean checkWifiOnAndConnected() {
         WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
